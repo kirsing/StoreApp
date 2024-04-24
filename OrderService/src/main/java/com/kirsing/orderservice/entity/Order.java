@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
-@Data
 @Entity
+@Table(name = "ORDER_DETAILS")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "ORDER_DETAILS")
 @Builder
 public class Order {
 

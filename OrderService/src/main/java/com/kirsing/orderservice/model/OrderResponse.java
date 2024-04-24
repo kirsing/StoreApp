@@ -23,22 +23,22 @@ public class OrderResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ProductDetails {
-        private String productName;
 
+        private String productName;
         private long productId;
         private long quantity;
         private long price;
     }
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class PaymentDetails {
+    public static class PaymentDetails{
         private long paymentId;
         private PaymentMode paymentMode;
         private String paymentStatus;
         private Instant paymentDate;
     }
-
 }
 

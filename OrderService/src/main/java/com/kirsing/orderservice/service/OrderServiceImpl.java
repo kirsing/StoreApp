@@ -2,7 +2,8 @@ package com.kirsing.orderservice.service;
 
 import com.kirsing.orderservice.entity.Order;
 import com.kirsing.orderservice.exception.CustomException;
-import com.kirsing.orderservice.external.client.PaymentsService;
+import com.kirsing.orderservice.external.client.PaymentService;
+
 import com.kirsing.orderservice.external.client.ProductService;
 import com.kirsing.orderservice.external.client.request.PaymentRequest;
 import com.kirsing.orderservice.external.client.response.PaymentResponse;
@@ -28,7 +29,7 @@ public class OrderServiceImpl implements OrderService{
     private ProductService productService;
 
     @Autowired
-    private PaymentsService paymentService;
+    private PaymentService paymentService;
 
     @Autowired
     private RestTemplate restTemplate;
