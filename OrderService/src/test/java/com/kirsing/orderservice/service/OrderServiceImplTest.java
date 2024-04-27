@@ -4,7 +4,9 @@ import com.kirsing.orderservice.entity.Order;
 import com.kirsing.orderservice.exception.CustomException;
 import com.kirsing.orderservice.external.client.PaymentService;
 import com.kirsing.orderservice.external.client.ProductService;
+import com.kirsing.orderservice.external.client.request.PaymentRequest;
 import com.kirsing.orderservice.external.client.response.PaymentResponse;
+import com.kirsing.orderservice.model.OrderRequest;
 import com.kirsing.orderservice.model.OrderResponse;
 import com.kirsing.orderservice.model.PaymentMode;
 import com.kirsing.orderservice.repository.OrderRepository;
@@ -18,6 +20,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
@@ -91,9 +95,70 @@ public class OrderServiceImplTest {
                 .findById(anyLong());
     }
 
+    @DisplayName("Place Order- Success Scenario")
+    @Test
+    void testWhenPlaceOrderSuccess() {
+        Order order = getMockOrder();
+        OrderRequest orderRequest = getMockOrderRequest();
 
+        when(orderRepository.save(any(Order.class)))
+                .thenReturn(order);
+        when(productService.reduceQuantity(anyLong(),anyLong()))
+                .thenReturn(new ResponseEntity<Void>(HttpStatus.OK));
 
+        when(paymentService.doPayment(any(PaymentRequest.class)))
+                .thenReturn(new ResponseEntity<Long>(1L,HttpStatus.OK));
 
+        long orderId =  orderService.placeOrder(orderRequest);
+
+        verify(orderRepository, times(2))
+        .save(any());
+
+        verify(productService, times(1))
+                .reduceQuantity(anyLong(),anyLong());
+
+        verify(paymentService, times(1))
+        .doPayment(any(PaymentRequest.class));
+
+        assertEquals(order.getId(), orderId);
+    }
+
+    @DisplayName("Place Order - Payment Failed Scenario")
+    @Test
+    void testWhenPlaceOrderFail() {
+        Order order = getMockOrder();
+        OrderRequest orderRequest = getMockOrderRequest();
+
+        when(orderRepository.save(any(Order.class)))
+                .thenReturn(order);
+        when(productService.reduceQuantity(anyLong(),anyLong()))
+                .thenReturn(new ResponseEntity<Void>(HttpStatus.OK));
+
+        when(paymentService.doPayment(any(PaymentRequest.class)))
+                .thenThrow(new RuntimeException());
+
+        long orderId =  orderService.placeOrder(orderRequest);
+
+        verify(orderRepository, times(2))
+                .save(any());
+
+        verify(productService, times(1))
+                .reduceQuantity(anyLong(),anyLong());
+
+        verify(paymentService, times(1))
+                .doPayment(any(PaymentRequest.class));
+
+        assertEquals(order.getId(), orderId);
+    }
+
+    private OrderRequest getMockOrderRequest() {
+        return OrderRequest.builder()
+                .productId(1)
+                .paymentMode(PaymentMode.CASH)
+                .quantity(10)
+                .totalAmount(100)
+                .build();
+    }
 
 
     private ProductResponse getMockProductResponse() {
