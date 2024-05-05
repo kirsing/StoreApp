@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @CircuitBreaker(name = "external", fallbackMethod = "fallback")
-@FeignClient(name = "PAYMENT-SERVICE/payment")
+@FeignClient(name = "PAYMENTSERVICE/payment")
 public interface PaymentService {
 
     @PostMapping

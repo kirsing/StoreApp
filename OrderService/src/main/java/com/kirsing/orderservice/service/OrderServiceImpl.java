@@ -7,10 +7,12 @@ import com.kirsing.orderservice.external.client.PaymentService;
 import com.kirsing.orderservice.external.client.ProductService;
 import com.kirsing.orderservice.external.client.request.PaymentRequest;
 import com.kirsing.orderservice.external.client.response.PaymentResponse;
+import com.kirsing.orderservice.external.client.response.ProductResponse;
 import com.kirsing.orderservice.model.OrderRequest;
 import com.kirsing.orderservice.model.OrderResponse;
 import com.kirsing.orderservice.repository.OrderRepository;
-import com.kirsing.productservice.model.ProductResponse;
+
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,14 +97,14 @@ public class OrderServiceImpl implements OrderService{
         log.info("Invoking Product service to fetch the product for id: {}", order.getProductId());
         ProductResponse productResponse
                 = restTemplate.getForObject(
-                "http://PRODUCT-SERVICE/product/" + order.getProductId(),
+                "http://PRODUCTSERVICE/product/" + order.getProductId(),
                 ProductResponse.class
         );
 
         log.info("Getting payment information form the payment Service");
         PaymentResponse paymentResponse
                 = restTemplate.getForObject(
-                "http://PAYMENT-SERVICE/payment/order/" + order.getId(),
+                "http://PAYMENTSERVICE/payment/order/" + order.getId(),
                 PaymentResponse.class
         );
 

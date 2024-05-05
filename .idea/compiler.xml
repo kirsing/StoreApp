@@ -7,7 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ConfigServer" />
+        <module name="configserver" />
         <module name="OrderService" />
         <module name="ProductService" />
         <module name="service-registry" />
@@ -15,6 +15,10 @@
         <module name="CloudGateway" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="config" target="17" />
+      <module name="ConfigServer" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -23,6 +27,8 @@
       <module name="OrderService" options="-parameters" />
       <module name="PaymentService" options="-parameters" />
       <module name="ProductService" options="-parameters" />
+      <module name="config" options="-parameters" />
+      <module name="configserver" options="-parameters" />
       <module name="service-registry" options="-parameters" />
     </option>
   </component>
