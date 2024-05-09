@@ -25,3 +25,41 @@ okta:
     client-id: 0oagkty5nuUAPuvbZ5d7
     client-secret: YU4A_jaijcmtbrF0x4jxb22gphZi8W3Ldew1gcQsojt_2oIMoUNKK0EjNvHCAs3z
     scopes: openid, profile, email, offline_access
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  info:
+    env:
+      enabled: true
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      probes:
+        enabled: true
+  health:
+    readinessstate:
+      enabled: true
+    livenessstate:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+endpoints:
+  shutdown:
+    enabled: true
+
+info:
+  app:
+    name: cloudgateway
+  description:
+    Cloud Gateway Application
+  version: 1.0.0
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"

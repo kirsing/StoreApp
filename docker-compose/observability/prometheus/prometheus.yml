@@ -1,0 +1,29 @@
+global:
+  scrape_interval:     5s # Set the scrape interval to every 5 seconds.
+  evaluation_interval: 5s # Evaluate rules every 5 seconds.
+
+scrape_configs:
+  - job_name: 'payment'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'paymentservice:9000' ]
+  - job_name: 'orders'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'orderservice:8090' ]
+  - job_name: 'products'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'productservice:8080' ]
+  - job_name: 'cloudgateway'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'cloudgateway:8072' ]
+  - job_name: 'eurekaserver'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'serviceregistry:8070' ]
+  - job_name: 'configserver'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'configserver:8071' ]
