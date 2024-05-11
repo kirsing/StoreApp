@@ -34,7 +34,7 @@ management:
   endpoints:
     web:
       exposure:
-        exclude: '*'
+        include: "*"
   info:
     env:
       enabled: true

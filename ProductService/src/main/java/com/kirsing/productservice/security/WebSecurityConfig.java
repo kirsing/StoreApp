@@ -2,6 +2,7 @@ package com.kirsing.productservice.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,9 +16,18 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityWebFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorizeRequest -> authorizeRequest
-                        .anyRequest().authenticated())
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+
+                .authorizeHttpRequests(authorizeRequest -> authorizeRequest.requestMatchers(HttpMethod.GET).permitAll());
+        http.authorizeHttpRequests(authorizeRequest -> {
+            try {
+                authorizeRequest.requestMatchers(HttpMethod.POST).authenticated()
+                        .and().oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+//                        .anyRequest().authenticated())
+//                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         return http.build();
     }
 }
