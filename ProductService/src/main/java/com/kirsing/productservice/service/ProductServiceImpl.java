@@ -1,7 +1,8 @@
 package com.kirsing.productservice.service;
 
 import com.kirsing.productservice.entity.Product;
-import com.kirsing.productservice.exception.ProductServiceCustomException;
+import com.kirsing.productservice.exception.InsufficientException;
+import com.kirsing.productservice.exception.ResourceNotFoundException;
 import com.kirsing.productservice.model.ProductRequest;
 import com.kirsing.productservice.model.ProductResponse;
 import com.kirsing.productservice.repository.ProductRepository;
@@ -35,8 +36,8 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductById(long productId) {
         log.info("Get the product for productId: {}", productId);
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductServiceCustomException("Product with given ID not found", "PRODUCT_NOT_FOUND"));
+        Product product = productRepository.findById(productId) // new ResourceNotFoundException("Order", "id", Long.toString(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", Long.toString(productId)));
         ProductResponse productResponse = new ProductResponse();
         BeanUtils.copyProperties(product, productResponse);
 
@@ -48,12 +49,13 @@ public class ProductServiceImpl implements ProductService {
        log.info("Reduce Quantity {} for Id: {}", quantity, productId);
 
        Product product = productRepository.findById(productId)
-               .orElseThrow(() -> new ProductServiceCustomException("Product with given ID not found", "PRODUCT_NOT_FOUND"));
+               .orElseThrow(() -> new ResourceNotFoundException("Product", "id", Long.toString(productId)));
 
        if(product.getQuantity() < quantity) {
-           throw new ProductServiceCustomException(
-                   "Product doesn't have sufficient Quantity",
-                   "INSUFFICIENT_QUANTITY");
+           throw new InsufficientException(getProductById(1).getProductName(), "quantity", Long.toString(quantity));
+           //ProductServiceCustomException(
+                   //"Product doesn't have sufficient Quantity",
+                   //"INSUFFICIENT_QUANTITY");
        }
        product.setQuantity(product.getQuantity() - quantity);
        productRepository.save(product);

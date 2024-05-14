@@ -34,4 +34,7 @@ public class Order {
 
     @Column(name = "TOTAL_AMOUNT")
     private long amount;
+
+    @Column(name = "communication_sw")
+    private Boolean communicationSw;
 }

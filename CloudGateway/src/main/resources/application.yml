@@ -3,6 +3,13 @@ spring:
     name: cloudgateway
   config:
     import: optional:configserver:http://localhost:8071/
+
+  data:
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
   cloud:
     gateway:
       routes:
@@ -10,14 +17,56 @@ spring:
           uri: lb://ORDERSERVICE
           predicates:
             - Path=/order/**
+          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: CircuitBreaker
+#                fallBackUri: forward:/orderServiceFallBack
+
+#            - name: Retry
+#              args:
+#                retries: 3
+#                methods: GET
+#                backoff:
+#                  firstBackoff: 100ms
+#                  maxBackoff: 1000ms
+#                  factor: 2
+#                  basedOnPreviousValue: true
+            - name: RequestRateLimiter
+
         - id: PAYMENTSERVICE
-          uri: lb://PAYMENT-SERVICE
+          uri: lb://PAYMENTSERVICE
           predicates:
             - Path=/payment/**
+          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: CircuitBreaker
+#                fallBackUri: forward:/paymentServiceFallBack
+#            - name: Retry
+#              args:
+#                retries: 3
+#                methods: POST,GET
+#                backoff:
+#                  firstBackoff: 100ms
+#                  maxBackoff: 1000ms
+#                  factor: 2
+#                  basedOnPreviousValue: true
+            - name: RequestRateLimiter
+
         - id: PRODUCTSERVICE
           uri: lb://PRODUCTSERVICE
           predicates:
             - Path=/product/**
+          filters:
+#            - name: CircuitBreaker
+#              args:
+#                name: CircuitBreaker
+#                fallBackUri: forward:/productServiceFallBack
+            - name: RequestRateLimiter
+#      httpclient:
+#        connect-timeout: 1000
+#        response-timeout: 5s
 okta:
   oauth2:
     issuer: https://dev-74127808.okta.com/oauth2/default
@@ -63,3 +112,16 @@ info:
 logging:
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+#resilience4j.circuitbreaker:
+#  configs:
+#    default:
+#      slidingWindowSize: 10 #сообщаем шаблону CB, сколько у него запросов.
+#      permittedNumberOfCallsInHalfOpenState: 2
+#      failureRateThreshold: 50
+#      slow-call-duration-threshold:
+#        seconds: 10
+#      waitDurationInOpenState: 10000
+      #Итак, с этой конфигурацией, моим шаблоном автоматического выключателя, он будет ждать 10 секунд при каждой попытке
+   #чтобы перейти в полуоткрытое состояние и разрешить частичный трафик.
+

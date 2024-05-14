@@ -17,7 +17,13 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityWebFilterChain(HttpSecurity http) throws Exception {
         http
 
-                .authorizeHttpRequests(authorizeRequest -> authorizeRequest.requestMatchers(HttpMethod.GET).permitAll());
+                .authorizeHttpRequests(authorizeRequest -> authorizeRequest.requestMatchers(HttpMethod.GET)
+                        .permitAll());
+        http
+
+                .authorizeHttpRequests(authorizeRequest -> authorizeRequest.requestMatchers(HttpMethod.PUT)
+                        .permitAll());
+
         http.authorizeHttpRequests(authorizeRequest -> {
             try {
                 authorizeRequest.requestMatchers(HttpMethod.POST).authenticated()

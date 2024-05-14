@@ -10,7 +10,21 @@ services:
     extends:
       file: common-config.yml
       service: network-deploy-service
-
+  rabbit:
+    image: rabbitmq:3.12-management
+    hostname: rabbitmq
+    ports:
+        - "5672:5672"
+        - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
   read:
     image: grafana/loki:2.9.2
     command: "-config.file=/etc/loki/config.yaml -target=read"
@@ -243,7 +257,7 @@ services:
       service: microservice-db-config
 
   configserver:
-    image: "kirsing123/configserver:v2"
+    image: "kirsing123/configserver:v3"
     container_name: configserver-microservice
     ports:
       - "8071:8071"
@@ -260,7 +274,7 @@ services:
       OTEL_SERVICE_NAME: "configserver"
 
   serviceregistry:
-    image: 'kirsing123/serviceregistry:v2'
+    image: 'kirsing123/serviceregistry:v3'
     container_name: serviceregistry-microservice
     ports:
       - '8070:8070'
@@ -278,7 +292,7 @@ services:
       OTEL_SERVICE_NAME: "serviceregistry"
 
   cloudgateway:
-    image: "kirsing123/cloudgateway:v2"
+    image: "kirsing123/cloudgateway:v3"
     container_name: cloudgateway-microservice
     ports:
       - "8072:8072"
@@ -305,7 +319,7 @@ services:
       service: microservice-eureka-config
 
   productservice:
-    image: "kirsing123/productservice:v2"
+    image: "kirsing123/productservice:v3"
     container_name: product-microservice
     ports:
       - "8080:8080"
@@ -326,7 +340,7 @@ services:
       service: microservice-eureka-config
 
   paymentservice:
-    image: "kirsing123/paymentservice:v2"
+    image: "kirsing123/paymentservice:v3"
     container_name: payment-microservice
     ports:
       - "9000:9000"
@@ -347,7 +361,7 @@ services:
       service: microservice-eureka-config
 
   orderservice:
-    image: "kirsing123/orderservice:v2"
+    image: "kirsing123/orderservice:v3"
     container_name: order-microservice
     ports:
       - "8090:8090"
@@ -360,12 +374,28 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "orderservice"
       SPRING_DATASOURCE_URL: "jdbc:mysql://orderdb:3306/orderdb"
+      SPRING_RABBITMQ_HOST: "rabbit"
     depends_on:
       orderdb:
+        condition: service_healthy
+      rabbit:
         condition: service_healthy
     extends:
       file: common-config.yml
       service: microservice-eureka-config
+  message:
+    image: "kirsing123/messageservice:v3"
+    container_name: message_microservice
+    depends_on:
+      rabbit:
+         condition: service_healthy
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbit"
+#      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
+
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
 networks:
   kirsing:

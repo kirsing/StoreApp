@@ -147,7 +147,7 @@
                 <version>3.4.1</version>
                 <configuration>
                     <to>
-                        <image>kirsing123/cloudgateway:v2</image>
+                        <image>kirsing123/cloudgateway:v3</image>
                     </to>
                 </configuration>
             </plugin>

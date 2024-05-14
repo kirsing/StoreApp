@@ -1,40 +1,52 @@
 package com.kirsing.orderservice.service;
 
 import com.kirsing.orderservice.entity.Order;
-import com.kirsing.orderservice.exception.CustomException;
+import com.kirsing.orderservice.exception.ResourceNotFoundException;
 import com.kirsing.orderservice.external.client.PaymentService;
 
 import com.kirsing.orderservice.external.client.ProductService;
 import com.kirsing.orderservice.external.client.request.PaymentRequest;
 import com.kirsing.orderservice.external.client.response.PaymentResponse;
 import com.kirsing.orderservice.external.client.response.ProductResponse;
+import com.kirsing.orderservice.model.OrderMsgDto;
 import com.kirsing.orderservice.model.OrderRequest;
 import com.kirsing.orderservice.model.OrderResponse;
 import com.kirsing.orderservice.repository.OrderRepository;
 
 
-import lombok.extern.log4j.Log4j2;
+import lombok.AllArgsConstructor;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
 
 @Service
-@Log4j2
+@AllArgsConstructor
 public class OrderServiceImpl implements OrderService{
+    private static final Logger log = LogManager.getLogger(OrderServiceImpl.class);
 
-    @Autowired
+
+private final StreamBridge streamBridge;
+
+
+
     private OrderRepository orderRepository;
 
-    @Autowired
+
     private ProductService productService;
 
-    @Autowired
+
     private PaymentService paymentService;
 
-    @Autowired
+
     private RestTemplate restTemplate;
+
 
     @Override
     public long placeOrder(OrderRequest orderRequest) {
@@ -79,10 +91,32 @@ public class OrderServiceImpl implements OrderService{
 
         order.setOrderStatus(orderStatus);
         orderRepository.save(order);
+        sendCommunication(order);
 
         log.info("Order Places successfully with Order Id: {}", order.getId());
         return order.getId();
     }
+    private void sendCommunication(Order order) {
+        final StreamBridge streamBridge = this.streamBridge;
+        var ordersMsgDto = new OrderMsgDto(order.getId(), order.getProductId(), order.getQuantity(), order.getOrderDate(),
+                order.getOrderStatus(), order.getAmount());
+        log.info("Sending Communication request for the details: {}", ordersMsgDto);
+        var result = streamBridge.send("sendCommunication-out-0", ordersMsgDto);
+        log.info("Is the Communication request successfully triggered ? : {}", result);
+    }
+    @Override
+    public boolean updateCommunicationStatus(Long orderId) {
+        boolean isUpdated = false;
+        if(orderId != 0){
+            Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order", "id", Long.toString(orderId))
+            );
+            order.setCommunicationSw(true);
+            orderRepository.save(order);
+            isUpdated = true;
+        }
+        return  isUpdated;
+    }
+
 
     @Override
     public OrderResponse getOrderDetails(long orderId) {
@@ -90,9 +124,7 @@ public class OrderServiceImpl implements OrderService{
 
         Order order
                 = orderRepository.findById(orderId)
-                .orElseThrow(() -> new CustomException("Order not found for the order Id:" + orderId,
-                        "NOT_FOUND",
-                        404));
+                .orElseThrow(() -> new ResourceNotFoundException("Order", "id", Long.toString(orderId)));
 
         log.info("Invoking Product service to fetch the product for id: {}", order.getProductId());
         ProductResponse productResponse
@@ -115,14 +147,15 @@ public class OrderServiceImpl implements OrderService{
                 .productId(productResponse.getProductId())
                 .build();
 
-        OrderResponse.PaymentDetails paymentDetails
-                = OrderResponse.PaymentDetails
-                .builder()
-                .paymentId(paymentResponse.getPaymentId())
-                .paymentStatus(paymentResponse.getStatus())
-                .paymentDate(paymentResponse.getPaymentDate())
-                .paymentMode(paymentResponse.getPaymentMode())
-                .build();
+            OrderResponse.PaymentDetails paymentDetails
+                    = OrderResponse.PaymentDetails
+                    .builder()
+                    .paymentId(paymentResponse.getPaymentId())
+                    .paymentStatus(paymentResponse.getStatus())
+                    .paymentDate(paymentResponse.getPaymentDate())
+                    .paymentMode(paymentResponse.getPaymentMode())
+                    .build();
+
 
         OrderResponse orderResponse
                 = OrderResponse.builder()

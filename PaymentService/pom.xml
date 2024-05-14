@@ -129,7 +129,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>kirsing123/paymentservice:v2</image>
+						<image>kirsing123/paymentservice:v3</image>
 					</to>
 				</configuration>
 			</plugin>

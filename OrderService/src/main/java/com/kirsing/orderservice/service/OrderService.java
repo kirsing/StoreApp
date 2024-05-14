@@ -7,4 +7,6 @@ public interface OrderService {
     long placeOrder(OrderRequest orderRequest);
 
     OrderResponse getOrderDetails(long orderId);
+
+    boolean updateCommunicationStatus(Long orderId);
 }
