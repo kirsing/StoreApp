@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: storeapp-configmap
+data:
+  SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071/"
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://serviceregistry:8070/eureka/"
+  CONFIGSERVER_APPLICATION_NAME: configserver
+  EUREKA_APPLICATION_NAME: serviceregistry
+  ORDERS_APPLICATION_NAME: ORDERSERVICE
+  PAYMENTS_APPLICATION_NAME: productservice
+  PRODUCTS_APPLICATION_NAME: paymentservice
+  MESSAGE_APPLICATION_NAME: messageservice
+  CLOUDGATEWAY_APPLICATION_NAME: cloudgateway
