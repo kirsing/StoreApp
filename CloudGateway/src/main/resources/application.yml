@@ -12,58 +12,62 @@ spring:
       timeout: 1s
   cloud:
     gateway:
-      routes:
-        - id : ORDERSERVICE
-          uri: lb://ORDERSERVICE
-          predicates:
-            - Path=/order/**
-          filters:
-#            - name: CircuitBreaker
-#              args:
-#                name: CircuitBreaker
-#                fallBackUri: forward:/orderServiceFallBack
+      discovery:
+        locator:
+          enabled: false
 
-#            - name: Retry
-#              args:
-#                retries: 3
-#                methods: GET
-#                backoff:
-#                  firstBackoff: 100ms
-#                  maxBackoff: 1000ms
-#                  factor: 2
-#                  basedOnPreviousValue: true
-            - name: RequestRateLimiter
-
-        - id: PAYMENTSERVICE
-          uri: lb://PAYMENTSERVICE
-          predicates:
-            - Path=/payment/**
-          filters:
-#            - name: CircuitBreaker
-#              args:
-#                name: CircuitBreaker
-#                fallBackUri: forward:/paymentServiceFallBack
-#            - name: Retry
-#              args:
-#                retries: 3
-#                methods: POST,GET
-#                backoff:
-#                  firstBackoff: 100ms
-#                  maxBackoff: 1000ms
-#                  factor: 2
-#                  basedOnPreviousValue: true
-            - name: RequestRateLimiter
-
-        - id: PRODUCTSERVICE
-          uri: lb://PRODUCTSERVICE
-          predicates:
-            - Path=/product/**
-          filters:
-#            - name: CircuitBreaker
-#              args:
-#                name: CircuitBreaker
-#                fallBackUri: forward:/productServiceFallBack
-            - name: RequestRateLimiter
+#      routes:
+#        - id : ORDERSERVICE
+#          uri: lb://ORDERSERVICE
+#          predicates:
+#            - Path=/order/**
+#          filters:
+##            - name: CircuitBreaker
+##              args:
+##                name: CircuitBreaker
+##                fallBackUri: forward:/orderServiceFallBack
+#
+##            - name: Retry
+##              args:
+##                retries: 3
+##                methods: GET
+##                backoff:
+##                  firstBackoff: 100ms
+##                  maxBackoff: 1000ms
+##                  factor: 2
+##                  basedOnPreviousValue: true
+#            - name: RequestRateLimiter
+#
+#        - id: PAYMENTSERVICE
+#          uri: lb://PAYMENTSERVICE
+#          predicates:
+#            - Path=/payment/**
+#          filters:
+##            - name: CircuitBreaker
+##              args:
+##                name: CircuitBreaker
+##                fallBackUri: forward:/paymentServiceFallBack
+##            - name: Retry
+##              args:
+##                retries: 3
+##                methods: POST,GET
+##                backoff:
+##                  firstBackoff: 100ms
+##                  maxBackoff: 1000ms
+##                  factor: 2
+##                  basedOnPreviousValue: true
+#            - name: RequestRateLimiter
+#
+#        - id: PRODUCTSERVICE
+#          uri: lb://PRODUCTSERVICE
+#          predicates:
+#            - Path=/product/**
+#          filters:
+##            - name: CircuitBreaker
+##              args:
+##                name: CircuitBreaker
+##                fallBackUri: forward:/productServiceFallBack
+#            - name: RequestRateLimiter
 #      httpclient:
 #        connect-timeout: 1000
 #        response-timeout: 5s
@@ -80,11 +84,11 @@ management:
     web:
       exposure:
         include: '*'
+  endpoint:
+    gateway:
+      enabled: true
   info:
     env:
-      enabled: true
-  endpoint:
-    shutdown:
       enabled: true
     health:
       probes:
@@ -98,9 +102,6 @@ management:
     tags:
       application: ${spring.application.name}
 
-endpoints:
-  shutdown:
-    enabled: true
 
 info:
   app:

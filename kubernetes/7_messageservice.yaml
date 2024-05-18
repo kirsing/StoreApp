@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-deployment
+  labels:
+    app: messageservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: messageservice
+  template:
+    metadata:
+      labels:
+        app: messageservice
+    spec:
+      containers:
+        - name: messageservice
+          image: kirsing123/messageservice:v3
+          ports:
+            - containerPort: 9010
+          env:
+            - name: SPRING_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: storeapp-configmap
+                  key: MESSAGE_APPLICATION_NAME
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: storeapp-configmap
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: messageservice
+spec:
+  selector:
+    app: messageservice
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 9010
+      targetPort: 9010

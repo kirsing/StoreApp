@@ -8,6 +8,7 @@ import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuit
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
+
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -26,7 +27,26 @@ public class CloudGatewayApplication {
         SpringApplication.run(CloudGatewayApplication.class, args);
     }
 
-
+    @Bean
+    public RouteLocator storeRouteConfig(RouteLocatorBuilder routeLocatorBuilder) {
+        return routeLocatorBuilder.routes()
+                .route(p -> p
+                        .path("/services/products/**")
+                        .filters(f -> f.rewritePath("/services/products/(?<segment>.*)", "/${segment}")
+                                .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
+                        .uri("lb://PRODUCTSERVICE"))
+                .route(p -> p
+                        .path("/services/orders/**")
+                        .filters(f -> f.rewritePath("/services/orders/(?<segment>.*)", "/${segment}")
+                                .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
+                        .uri("lb://ORDERSERVICE"))
+                .route(p -> p
+                        .path("/services/**")
+                        .filters(f -> f.rewritePath("/services/(?<segment>.*)", "/${segment}")
+                                .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
+                        .uri("lb://PAYMENTSERVICE"))
+                .build();
+    }
 //    @Bean
 //    public Customizer<Resilience4JCircuitBreakerFactory> defaultCustomizer() {
 //        return factory -> factory.configureDefault(
