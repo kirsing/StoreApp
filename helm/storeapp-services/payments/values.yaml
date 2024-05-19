@@ -1,0 +1,26 @@
+deploymentName: paymentservice-deployment
+serviceName: paymentservice
+appLabel: paymentservice
+appName: paymentservice
+
+replicaCount: 1
+
+image:
+  repository: kirsing123/paymentservice
+  tag: v3
+
+containerPort: 9000
+
+service:
+  type: ClusterIP
+  port: 9000
+  targetPort: 9000
+
+appname_enabled: true
+config_enabled: true
+serviceregistry_enabled: true
+otel_enabled: true
+rabbitmq_enabled: false
+orderdb_enabled: false
+paymentdb_enabled: true
+productdb_enabled: false

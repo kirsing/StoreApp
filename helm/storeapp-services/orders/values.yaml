@@ -1,0 +1,26 @@
+deploymentName: orderservice-deployment
+serviceName: orderservice
+appLabel: orderservice
+appName: orderservice
+
+replicaCount: 1
+
+image:
+  repository: kirsing123/orderservice
+  tag: v3
+
+containerPort: 8090
+
+service:
+  type: ClusterIP
+  port: 8090
+  targetPort: 8090
+
+appname_enabled: true
+config_enabled: true
+serviceregistry_enabled: true
+otel_enabled: true
+rabbitmq_enabled: true
+orderdb_enabled: true
+paymentdb_enabled: false
+productdb_enabled: false

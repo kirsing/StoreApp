@@ -1,0 +1,26 @@
+deploymentName: productservice-deployment
+serviceName: productservice
+appLabel: productservice
+appName: productservice
+
+replicaCount: 1
+
+image:
+  repository: kirsing123/productservice
+  tag: v3
+
+containerPort: 8080
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+
+appname_enabled: true
+config_enabled: true
+serviceregistry_enabled: true
+otel_enabled: true
+rabbitmq_enabled: false
+orderdb_enabled: false
+paymentdb_enabled: false
+productdb_enabled: true

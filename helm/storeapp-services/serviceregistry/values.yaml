@@ -1,0 +1,26 @@
+deploymentName: serviceregistry-deployment
+serviceName: serviceregistry
+appLabel: serviceregistry
+appName: serviceregistry
+
+replicaCount: 1
+
+image:
+  repository: kirsing123/serviceregistry
+  tag: v3
+
+containerPort: 8070
+
+service:
+  type: LoadBalancer
+  port: 8070
+  targetPort: 8070
+
+appname_enabled: true
+config_enabled: true
+serviceregistry_enabled: false
+otel_enabled: true
+rabbitmq_enabled: false
+orderdb_enabled: false
+paymentdb_enabled: false
+productdb_enabled: false

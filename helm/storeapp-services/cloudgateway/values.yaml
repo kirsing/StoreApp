@@ -1,0 +1,26 @@
+deploymentName: cloudgateway-deployment
+serviceName: cloudgateway
+appLabel: cloudgateway
+appName: cloudgateway
+
+replicaCount: 1
+
+image:
+  repository: kirsing123/cloudgateway
+  tag: v3
+
+containerPort: 8072
+
+service:
+  type: LoadBalancer
+  port: 8072
+  targetPort: 8072
+
+appname_enabled: true
+config_enabled: true
+serviceregistry_enabled: true
+otel_enabled: true
+rabbitmq_enabled: false
+orderdb_enabled: false
+paymentdb_enabled: false
+productdb_enabled: false

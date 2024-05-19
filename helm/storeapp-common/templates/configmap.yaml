@@ -5,8 +5,12 @@ metadata:
   name: {{ .Values.global.configMapName }}
 data:
   SPRING_CONFIG_IMPORT: {{ .Values.global.configServerURL }}
-  SPRING.CLOUD.KUBERNETES.DISCOVERY.DISCOVERY-SERVER-URL: {{ .Values.global.discoveryServerURL }}
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: {{ .Values.global.eurekaServerURL }}
   JAVA_TOOL_OPTIONS: {{ .Values.global.openTelemetryJavaAgent }}
   OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.global.otelExporterEndPoint }}
   OTEL_METRICS_EXPORTER: {{ .Values.global.otelMetricsExporter }}
+  SPRING_RABBITMQ_HOST: {{ .Values.global.rabbitBrokerURL }}
+  ORDERDB_URL: {{ .Values.global.ORDERDB_URL }}
+  PAYMENTDB_URL: {{ .Values.global.PAYMENTDB_URL }}
+  PRODUCTDB_URL: {{ .Values.global.PRODUCTDB_URL }}
 {{- end -}}

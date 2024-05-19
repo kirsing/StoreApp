@@ -1,0 +1,27 @@
+dependencies:
+- name: storeapp-common
+  repository: file://../../storeapp-common
+  version: 0.1.0
+- name: configserver
+  repository: file://../../storeapp-services/configserver
+  version: 0.1.0
+- name: orders
+  repository: file://../../storeapp-services/orders
+  version: 0.1.0
+- name: payments
+  repository: file://../../storeapp-services/payments
+  version: 0.1.0
+- name: products
+  repository: file://../../storeapp-services/products
+  version: 0.1.0
+- name: cloudgateway
+  repository: file://../../storeapp-services/cloudgateway
+  version: 0.1.0
+- name: messageservice
+  repository: file://../../storeapp-services/messageservice
+  version: 0.1.0
+- name: serviceregistry
+  repository: file://../../storeapp-services/serviceregistry
+  version: 0.1.0
+digest: sha256:be79eebb1181a371673bdd330ddce03640fdc8a978c22c44ab9aaa34b00c817c
+generated: "2024-05-19T16:14:46.881055+03:00"

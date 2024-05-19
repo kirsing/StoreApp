@@ -26,13 +26,6 @@ spec:
             - name: SPRING_APPLICATION_NAME
               value: {{ .Values.appName }}
         {{- end }}
-        {{- if .Values.profile_enabled }}
-            - name: SPRING_PROFILES_ACTIVE
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Values.global.configMapName }}
-                  key: SPRING_PROFILES_ACTIVE
-        {{- end }}
         {{- if .Values.config_enabled }}
             - name: SPRING_CONFIG_IMPORT
               valueFrom:
@@ -40,12 +33,12 @@ spec:
                   name: {{ .Values.global.configMapName }}
                   key: SPRING_CONFIG_IMPORT
         {{- end }}
-        {{- if .Values.discovery_enabled }}
-            - name: SPRING.CLOUD.KUBERNETES.DISCOVERY.DISCOVERY-SERVER-URL
+        {{- if .Values.serviceregistry_enabled }}
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Values.global.configMapName }}
-                  key: SPRING.CLOUD.KUBERNETES.DISCOVERY.DISCOVERY-SERVER-URL
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
         {{- end }}
         {{- if .Values.otel_enabled }}
             - name: JAVA_TOOL_OPTIONS
@@ -66,4 +59,32 @@ spec:
             - name: OTEL_SERVICE_NAME
               value: {{ .Values.appName }}
         {{- end }}
+            {{- if .Values.rabbitmq_enabled }}
+            - name: SPRING_RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.global.configMapName }}
+                  key: SPRING_RABBITMQ_HOST
+            {{- end }}
+            {{- if .Values.orderdb_enabled }}
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.global.configMapName }}
+                  key: ORDERDB_URL
+            {{- end }}
+            {{- if .Values.paymentdb_enabled }}
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.global.configMapName }}
+                  key: PAYMENTDB_URL
+            {{- end }}
+            {{- if .Values.productdb_enabled }}
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.global.configMapName }}
+                  key: PRODUCTDB_URL
+            {{- end }}
 {{- end -}}
