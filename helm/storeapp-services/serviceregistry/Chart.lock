@@ -1,6 +1,0 @@
-dependencies:
-- name: storeapp-common
-  repository: file://../../storeapp-common
-  version: 0.1.0
-digest: sha256:e32b96c440f585810511a92a2b05760d463b9504dc87075c540d1c280edbe5ed
-generated: "2024-05-19T13:04:14.817452+03:00"

@@ -15,8 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-//@CircuitBreaker(name = "external", fallbackMethod = "fallback")
-@FeignClient(name = "PAYMENTSERVICE/payment", fallback = PaymentFallBack.class)
+//@CircuitBreaker(name = "external", fallbackMethod = "fallback")  // for V3 you have to exclude url argument
+@FeignClient(name = "PAYMENTSERVICE/payment", url = "http://paymentservice:9000/payment", fallback = PaymentFallBack.class)
 public interface PaymentService {
 
     @PostMapping

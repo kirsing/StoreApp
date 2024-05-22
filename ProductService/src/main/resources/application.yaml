@@ -12,16 +12,19 @@ spring:
     name: productservice
   config:
     import: optional:configserver:http://localhost:8071/
+  cloud:
+    kubernetes:
+      discovery:
+        all-namespaces: true
 
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8070/eureka/
-    fetch-registry: true
-    register-with-eureka: true
-  instance:
-    prefer-ip-address: true
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8070/eureka/
+#    fetch-registry: true
+#    register-with-eureka: true
+#  instance:
+#    prefer-ip-address: true
 
 okta:
   oauth2:
@@ -65,3 +68,4 @@ info:
 logging:
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+

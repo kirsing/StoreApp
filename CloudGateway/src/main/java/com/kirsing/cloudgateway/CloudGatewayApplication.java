@@ -9,6 +9,7 @@ import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JCircuit
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
 
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 
 
 @SpringBootApplication
+@EnableDiscoveryClient // FOR V4
 public class CloudGatewayApplication {
 
     public static void main(String[] args) {
@@ -34,17 +36,20 @@ public class CloudGatewayApplication {
                         .path("/services/products/**")
                         .filters(f -> f.rewritePath("/services/products/(?<segment>.*)", "/${segment}")
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
-                        .uri("lb://PRODUCTSERVICE"))
+//                        .uri("lb://PRODUCTSERVICE")) // FOR V3 we need LoadBalancer using Eureka
+                        .uri("http://productservice:8080"))
                 .route(p -> p
                         .path("/services/orders/**")
                         .filters(f -> f.rewritePath("/services/orders/(?<segment>.*)", "/${segment}")
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
-                        .uri("lb://ORDERSERVICE"))
+//                        .uri("lb://ORDERSERVICE"))
+                        .uri("http://orderservice:8090"))
                 .route(p -> p
-                        .path("/services/**")
-                        .filters(f -> f.rewritePath("/services/(?<segment>.*)", "/${segment}")
+                        .path("/services/payments/**")
+                        .filters(f -> f.rewritePath("/services/payments/(?<segment>.*)", "/${segment}")
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
-                        .uri("lb://PAYMENTSERVICE"))
+                        .uri("http://paymentservice:9000"))
+//                        .uri("lb://PAYMENTSERVICE"))
                 .build();
     }
 //    @Bean

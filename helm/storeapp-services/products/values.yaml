@@ -7,7 +7,7 @@ replicaCount: 1
 
 image:
   repository: kirsing123/productservice
-  tag: v3
+  tag: v4
 
 containerPort: 8080
 
@@ -18,7 +18,7 @@ service:
 
 appname_enabled: true
 config_enabled: true
-serviceregistry_enabled: true
+discovery_enabled: true
 otel_enabled: true
 rabbitmq_enabled: false
 orderdb_enabled: false

@@ -1,11 +1,11 @@
 global:
   configMapName: storeappdev-configmap
   configServerURL: configserver:http://configserver:8071/
-  eurekaServerURL: "http://serviceregistry:8070/eureka/"
+  discoveryServerURL: "http://spring-cloud-kubernetes-discoveryserver:80/"
   openTelemetryJavaAgent: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
   otelExporterEndPoint: http://tempo-grafana-tempo-distributor:4317
   otelMetricsExporter: none
-  rabbitBrokerURL: rabbitmq.default.svc.cluster.local:5672
+  rabbitBrokerURL: rabbitmq.default.svc.cluster.local
   ORDERDB_URL: jdbc:mysql://35.246.204.238:3306/orderdb
   PAYMENTDB_URL: jdbc:mysql://35.246.204.238:3306/paymentdb
   PRODUCTDB_URL: jdbc:mysql://35.246.204.238:3306/productdb

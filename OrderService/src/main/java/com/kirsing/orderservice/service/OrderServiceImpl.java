@@ -20,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -46,6 +47,7 @@ private final StreamBridge streamBridge;
 
 
     private RestTemplate restTemplate;
+
 
 
     @Override
@@ -129,15 +131,15 @@ private final StreamBridge streamBridge;
         log.info("Invoking Product service to fetch the product for id: {}", order.getProductId());
         ProductResponse productResponse
                 = restTemplate.getForObject(
-                "http://PRODUCTSERVICE/product/" + order.getProductId(),
-                ProductResponse.class
+                "http://productservice:8080/product/" + order.getProductId(),
+                ProductResponse.class   // "http://PRODUCTSERVICE/product/"
         );
 
         log.info("Getting payment information form the payment Service");
         PaymentResponse paymentResponse
                 = restTemplate.getForObject(
-                "http://PAYMENTSERVICE/payment/order/" + order.getId(),
-                PaymentResponse.class
+                "http://paymentservice:9000/payment/"+ "order/" + order.getId(),
+                PaymentResponse.class  //"http://PAYMENTSERVICE/payment/order/"
         );
 
         OrderResponse.ProductDetails productDetails

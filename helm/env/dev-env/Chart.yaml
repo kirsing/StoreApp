@@ -51,7 +51,3 @@ dependencies:
   - name: messageservice
     version: 0.1.0
     repository: file://../../storeapp-services/messageservice
-
-  - name: serviceregistry
-    version: 0.1.0
-    repository: file://../../storeapp-services/serviceregistry
