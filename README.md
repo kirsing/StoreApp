@@ -4,8 +4,8 @@
 # About the project
 <ul style="list-style-type:disc">
   <li>This project is based Spring Boot Microservices with the usage of Docker and Kubernetes</li>
-  <li>User can't register but login through auth service (provided by Okta) by user role (ADMIN or USER) through api gateway</li>
-  <li>User can send any request to relevant service through api gateway with its bearer token</li>
+  <li>Customer can't register himself but login through auth service (provided by Okta) by user role (ADMIN or USER) through api gateway</li>
+  <li>Customer can send any request to relevant service through api gateway with its bearer token</li>
 </ul>
 
 8 services whose name are shown below have been devised within the scope of this project.
@@ -78,14 +78,6 @@
       <td></td>
       <td><a href="README.md#getOrderById">Info</a></td>
   </tr>
-  <tr>
-      <td>GET</td>
-      <td>/payment/order/{order_id}</td>
-      <td>Get Payment Details by Order Id</td>
-      <td></td>
-      <td></td>
-      <td><a href="README.md#getPaymentDetailsByOrderId">Info</a></td>
-  </tr>
 
 </table>
 
@@ -137,26 +129,17 @@
     }
 ```
 
-##### <a id="refreshtoken"> Refresh Token for User and Admin
-```
-    http://localhost:9090/authenticate/refreshtoken
-    
-    {
-        "refreshToken" : ""
-    }
-```
-
 ##### <a id="addProduct"> Add Product
 ```
     http://localhost:9090/product
     
     {
-        "name" : "Product 1",
-        "price" : 100,
-        "quantity" : 1
+        "name" : "Google Pixel 8",
+        "price" : 1000,
+        "quantity" : 15
     }
     
-    Bearer Token : User Token
+    Bearer Token : User (ADMIN ROLE) Token
 ```
 
 ##### <a id="placeorder"> Place Order
@@ -170,7 +153,7 @@
         "paymentMode" : "CASH"
     }
     
-    Bearer Token : User Token
+    Bearer Token : User (CUSTOMER Role) Token
 ```
 
 ## Valid Request Params
@@ -198,13 +181,6 @@
     Bearer Token : Admin Token
 ```
 
-##### <a id="deleteProductById">Delete Product By Id
-```
-    http://localhost:9090/order/{order_id}
-    
-    Bearer Token : User Token
-```
-
 ##### <a id="getPaymentDetailsByOrderId">Get Payment Details by Order Id
 ```
     http://localhost:9090/payment/order/{order_id}
@@ -215,7 +191,7 @@
 ### 🔨 Run the App
 <b>1 )</b> Download your project from this link `https://github.com/kirsing/StoreApp`
 
-<b>2 )</b> Go to the project's home directory :  `cd StoreApp`
+<b>2 )</b> Go to the project's home directory :  `cd StoreApp-main`
 
 <b>Docker</b>
 
