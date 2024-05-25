@@ -1,5 +1,6 @@
 # Store Application - Spring Boot Microservice Example(Eureka Server, Config Server, API Gateway, Services , Grafana Stack, RabbitMQ Redis, Resilience4j, Docker, Kubernetes)
-![](/Users/kirylyudayeu/Downloads/Store APP .jpg)
+
+![](/Users/kirylyudayeu/Downloads/Store_APP.jpg)
 
 # About the project
 <ul style="list-style-type:disc">
