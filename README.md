@@ -233,3 +233,26 @@ echo "Password: $(kubectl get secret grafana-admin --namespace default -o jsonpa
 
 <b>4 )</b> Install all <b>Helm Charts</b> using **Helm** through this command 
 `helm install <your-application-name> dev-env`
+
+
+### Screenshots
+
+<details>
+<summary>Click here to show the screenshot of project</summary>
+    <p> Docker Desktop to show all running containers </p>
+<img src = https://github.com/kirsing/StoreApp/assets/86996284/30cbc5ba-8e27-43e1-87c0-13fd00da3239>
+
+<p> Okta </p>
+<img src = https://github.com/kirsing/StoreApp/assets/86996284/e5e6311d-3943-4154-8034-da1a43312538>
+<img src = https://github.com/kirsing/StoreApp/assets/86996284/5f53b254-5e44-4bc9-ad08-e9463774bb23>
+
+<p> Grafana </p>
+<img src = https://github.com/kirsing/StoreApp/assets/86996284/84ae2e0c-c1e0-4280-8c25-e569e6e532d7>
+
+<p> RabbitMQ </p>
+<img src = https://github.com/kirsing/StoreApp/assets/86996284/9d2929b4-ce55-4f49-930c-6acbb5b1759c>
+
+<p> Kubernetes Dashboard </p>
+   <img src = https://github.com/kirsing/StoreApp/assets/86996284/72dba9ea-bd41-411d-bcc8-94b092ab8888>
+    <img src = https://github.com/kirsing/StoreApp/assets/86996284/597206fc-8ad2-4af6-a482-3f77e499cb12>
+</details>   

@@ -6,6 +6,6 @@ global:
   otelExporterEndPoint: http://tempo-grafana-tempo-distributor:4317
   otelMetricsExporter: none
   rabbitBrokerURL: rabbitmq.default.svc.cluster.local
-  ORDERDB_URL: jdbc:mysql://35.246.204.238:3306/orderdb
-  PAYMENTDB_URL: jdbc:mysql://35.246.204.238:3306/paymentdb
-  PRODUCTDB_URL: jdbc:mysql://35.246.204.238:3306/productdb
+  ORDERDB_URL: jdbc:mysql://34.140.176.109:3306/orderdb
+  PAYMENTDB_URL: jdbc:mysql://34.140.176.109:3306/paymentdb
+  PRODUCTDB_URL: jdbc:mysql://34.140.176.109:3306/productdb
