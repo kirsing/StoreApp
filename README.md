@@ -1,5 +1,5 @@
 # Store Application - Spring Boot Microservice Example(Eureka Server, Config Server, API Gateway, Services , Grafana Stack, RabbitMQ Redis, Resilience4j, Docker, Kubernetes)
-![](https://github.com/kirsing/StoreApp/assets/86996284/1cc2f1e2-4cc5-4804-a2b4-b665a8ba764a)
+![StoreApp](https://github.com/kirsing/StoreApp/assets/86996284/168f3f65-840a-4a8b-9fa4-570a7f80909e)
 
 # About the project
 <ul style="list-style-type:disc">
@@ -212,15 +212,16 @@ echo "Password: $(kubectl get secret grafana-admin --namespace default -o jsonpa
 ## 🔨 Run the App
 <b>1 )</b> Download your project from this link `https://github.com/kirsing/StoreApp`
 
-<b>2 )</b> Go to the project's home directory :  `cd StoreApp-main`
+<b>2 )</b> Go to the project's home directory :  `cd ~/StoreApp-main`
 
 <b>Docker</b>
 
-<b>1 )</b> Install <b>Docker Desktop</b>. Here is the installation <b>link</b> :
+<b>1 )</b> Install <b>Docker Desktop</b>. Here is the installation `https://www.docker.com/get-started/` :
 
-<b>2 )</b> Run all <b>Containers</b> through this command shown below under main folder
+<b>2 )</b> Go to the specific directory: `cd ~/StoreApp-main/docker-compose/local`
 
-<b>5 )</b> Send request to any service by using request collections under <b>postman_collection</b> 
+<b>3 )</b> Run all <b>Containers</b> through this command - `docker compose up -d`
+
 
 <b>Kubernetes</b>
 
@@ -230,7 +231,5 @@ echo "Password: $(kubectl get secret grafana-admin --namespace default -o jsonpa
 
 <b>3 )</b> Go to the directory :  `cd ~/StoreApp/helm/env`
 
-<b>4 )</b> Go to the project's home directory :  `cd StoreApp`
-
-<b>5 )</b> Install all <b>Helm Charts</b> using **Helm** through this command 
+<b>4 )</b> Install all <b>Helm Charts</b> using **Helm** through this command 
 `helm install <your-application-name> dev-env`
