@@ -1,5 +1,5 @@
 # Store Application - Spring Boot Microservice Example(Eureka Server, Config Server, API Gateway, Services , Grafana Stack, RabbitMQ Redis, Resilience4j, Docker, Kubernetes)
-![image](https://github.com/kirsing/StoreApp/assets/86996284/794ac3a0-2c67-498d-8c88-d4d57c8c477b)
+![](https://github.com/kirsing/StoreApp/assets/86996284/1cc2f1e2-4cc5-4804-a2b4-b665a8ba764a)
 
 # About the project
 <ul style="list-style-type:disc">
@@ -29,14 +29,6 @@
       <th>Valid Request Body</th>
       <th>Valid Request Params</th>
       <th>Valid Request Params and Body</th>
-  </tr>
-  <tr>
-      <td>POST</td>
-      <td>authenticate/login</td>
-      <td>Login for User and Admin</td>
-      <td><a href="README.md#login">Info</a></td>
-      <td></td>
-      <td></td>
   </tr>
   <tr>
       <td>POST</td>
@@ -100,7 +92,7 @@
         * Eureka Server
         * Eureka Client
 * Database
-    * PostgreSQL
+    * MySQL
 * Redis
 * Grafana Stack
 * Docker Compose
@@ -112,26 +104,23 @@
 
 ## Valid Request Body
 
-##### <a id="login"> Login for User and Admin
+##### <a id="login"> Login for Customer and Admin through Okta UI
 ```
-    http://localhost:9090/authenticate/login
+    Customer Role
+    http://localhost:8072/authenticate/login
     
-    {
-        "username" : "User",
-        "password" : "User"
-    }
+        username : customer@store.com,
+        password : user12345!
     
-    http://localhost:9090/authenticate/login
-    
-    {
-        "username" : "UserAdmin",
-        "password" : "UserAdmin"
-    }
+    Admin Role
+    http://localhost:8072/authenticate/login
+        username : admin@admin.com,
+        password : store.123456789!
 ```
 
 ##### <a id="addProduct"> Add Product
 ```
-    http://localhost:9090/product
+    http://localhost:8072/services/products/product
     
     {
         "name" : "Google Pixel 8",
@@ -144,7 +133,7 @@
 
 ##### <a id="placeorder"> Place Order
 ```
-    http://localhost:9090/order/placeorder
+    http://localhost:8072/services/orders/order/placeOrder
     
     {
         "productId" : 1,
@@ -160,7 +149,7 @@
 
 ##### <a id="reduceQuantityOfProduct">Reduce Quantity of Product
 ```
-    http://localhost:9090/product/reduceQuantity/1?quantity=1
+    http://localhost:8072/services/products/product/reduceQuantity/1?quantity=1
     
     Bearer Token : User Token
 ```
@@ -169,26 +158,58 @@
 
 ##### <a id="getProductById">Get Product By Id
 ```
-    http://localhost:9090/product/{prodcutId}
+    http://localhost:8072/services/products/product/{productId}
     
-    Bearer Token : User Token
-```
-
-##### <a id="deleteProductById">Delete Product By Id
-```
-    http://localhost:9090/product/{prodcutId}
-    
-    Bearer Token : Admin Token
+    Bearer Token : Both Token
 ```
 
 ##### <a id="getPaymentDetailsByOrderId">Get Payment Details by Order Id
 ```
-    http://localhost:9090/payment/order/{order_id}
+    http://localhost:8072/services/payments/payment/order/{orderId}
     
-    Bearer Token : User Token
+    Bearer Token : Both Token
+```
+##### <a id="getOrderDetailsByOrderId">Get Order Details by Order Id
+```
+    http://localhost:8072/services/orders/order/{orderId}"
+    
+    Bearer Token : Both Token
 ```
 
-### 🔨 Run the App
+
+
+### Additional information
+#### If Docker:
+Access to see queses by RabbitMQ:
+```
+http://localhost:15672/
+user: guest
+password: guest
+```
+
+Access to see metrics, tracing and so on, Grafana Dashboard
+```
+http://localhost:3000/
+user: admin
+password: admin
+```
+
+#### If K8s:
+Access to see queses by RabbitMQ:
+```
+kubectl port-forward --namespace default svc/rabbitmq 5672:5672 echo "URL : http://127.0.0.1:15672/"
+```
+
+Access to see metrics, tracing and so on, Grafana Dashboard
+```
+echo "Browse to http://127.0.0.1:8080" 
+kubectl port-forward svc/grafana 3000:3000 &
+echo "User: admin" 
+echo "Password: $(kubectl get secret grafana-admin --namespace default -o jsonpath="{.data.GF_SECURITY_ADMIN_PASSWORD}" | base64 -d)"
+```
+
+
+## 🔨 Run the App
 <b>1 )</b> Download your project from this link `https://github.com/kirsing/StoreApp`
 
 <b>2 )</b> Go to the project's home directory :  `cd StoreApp-main`
